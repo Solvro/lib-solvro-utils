@@ -29,6 +29,11 @@
       "types": "./dist/arrays.d.ts",
       "import": "./dist/arrays.js",
       "require": "./dist/arrays.cjs"
+    },
+    "./semaphore": {
+      "types": "./dist/semaphore.d.ts",
+      "import": "./dist/semaphore.js",
+      "require": "./dist/semaphore.cjs"
     }
   },
   "devDependencies": {
