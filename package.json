@@ -25,6 +25,11 @@
     "build": "tsup lib/*.ts --format cjs,esm --dts"
   },
   "exports": {
+    "./arrays": {
+      "types": "./dist/arrays.d.ts",
+      "import": "./dist/arrays.js",
+      "require": "./dist/arrays.cjs"
+    }
   },
   "devDependencies": {
     "@solvro/config": "^1.13.5",
