@@ -55,7 +55,7 @@ export class Semaphore {
     }
   }
 
-  private acquire(): Promise<void> {
+  protected acquire(): Promise<void> {
     // if we're under capacity, bump the count and resolve immediately
     if (this.capacity > this.#currentTasks) {
       this.#currentTasks += 1;
@@ -65,7 +65,7 @@ export class Semaphore {
     return new Promise((resolve) => this.#waitingTasks.push(resolve));
   }
 
-  private release() {
+  protected release() {
     // try waking up the next task
     const nextTask = this.#waitingTasks.shift();
     if (nextTask === undefined) {
