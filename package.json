@@ -1,0 +1,37 @@
+{
+  "name": "@solvro/utils",
+  "version": "0.0.0",
+  "description": "Small environment-agnostic TS utilities",
+  "keywords": [
+    "typescript",
+    "utilities",
+    "utils",
+    "semaphore",
+    "maps",
+    "arrays"
+  ],
+  "homepage": "https://github.com/Solvro/lib-solvro-utils#readme",
+  "bugs": {
+    "url": "https://github.com/Solvro/lib-solvro-utils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Solvro/lib-solvro-utils.git"
+  },
+  "license": "MPL-2.0",
+  "author": "",
+  "type": "module",
+  "scripts": {
+    "build": "tsup lib/*.ts --format cjs,esm --dts"
+  },
+  "exports": {
+  },
+  "devDependencies": {
+    "@solvro/config": "^1.13.5",
+    "eslint": "^9.27.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "prettier": "@solvro/config/prettier"
+}
