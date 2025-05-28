@@ -30,6 +30,11 @@
       "import": "./dist/arrays.js",
       "require": "./dist/arrays.cjs"
     },
+    "./map": {
+      "types": "./dist/map.d.ts",
+      "import": "./dist/map.js",
+      "require": "./dist/map.cjs"
+    },
     "./semaphore": {
       "types": "./dist/semaphore.d.ts",
       "import": "./dist/semaphore.js",
