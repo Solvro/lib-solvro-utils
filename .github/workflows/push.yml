@@ -138,6 +138,7 @@ jobs:
         with:
           artifact-ids: ${{ needs.build.outputs.art-id }}
           path: dist/
+          merge-multiple: true
 
       - name: Publish
         run: npm publish --provenance --access public
