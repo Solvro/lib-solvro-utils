@@ -121,23 +121,6 @@ describe("map.ts", () => {
 
   describe("extendMap", () => {
     const extendTypeError = "Expected the existing map to be a vanilla map!";
-    let mapPrototypeBackup: Record<string, PropertyDescriptor> = {};
-
-    before(() => {
-      // back up the Map prototype
-      mapPrototypeBackup = Object.getOwnPropertyDescriptors(Map.prototype);
-    });
-
-    after(() => {
-      // restore the Map prototype
-      for (const key of Object.keys(
-        Object.getOwnPropertyDescriptors(Map.prototype),
-      )) {
-        // @ts-expect-error - ts not very smart
-        delete Map.prototype[key];
-      }
-      Object.defineProperties(globalThis.Map.prototype, mapPrototypeBackup);
-    });
 
     it("extends a vanilla map", () => {
       const map = new Map();
@@ -181,6 +164,24 @@ describe("map.ts", () => {
   });
 
   describe("extendGlobally", () => {
+    let mapPrototypeBackup: Record<string, PropertyDescriptor> = {};
+
+    before(() => {
+      // back up the Map prototype
+      mapPrototypeBackup = Object.getOwnPropertyDescriptors(Map.prototype);
+    });
+
+    after(() => {
+      // restore the Map prototype
+      for (const key of Object.keys(
+        Object.getOwnPropertyDescriptors(Map.prototype),
+      )) {
+        // @ts-expect-error - ts not very smart
+        delete Map.prototype[key];
+      }
+      Object.defineProperties(globalThis.Map.prototype, mapPrototypeBackup);
+    });
+
     it("extends the Map prototype", () => {
       const map = new Map();
       map.set("a", 1);
