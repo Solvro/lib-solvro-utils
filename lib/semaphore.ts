@@ -12,7 +12,7 @@ export class Semaphore {
    *
    * Safe to modify after creation
    */
-  capacity: number;
+  #capacity: number;
   #currentTasks: number;
   #waitingTasks: (() => void)[];
 
@@ -22,7 +22,10 @@ export class Semaphore {
    * @param capacity the max amount of concurrent tasks
    */
   constructor(capacity: number) {
-    this.capacity = capacity;
+    if (capacity < 1) {
+      throw new Error("Invalid capacity");
+    }
+    this.#capacity = capacity;
     this.#currentTasks = 0;
     this.#waitingTasks = [];
   }
@@ -32,6 +35,28 @@ export class Semaphore {
    */
   public get currentTasks(): number {
     return this.#currentTasks;
+  }
+
+  /**
+   * Get the amount of currently waiting tasks
+   */
+  public get waitingTasks(): number {
+    return this.#waitingTasks.length;
+  }
+
+  public get capacity(): number {
+    return this.#capacity;
+  }
+  public set capacity(newCapacity: number) {
+    this.#capacity = newCapacity;
+    while (this.#capacity > this.#currentTasks) {
+      const nextTask = this.#waitingTasks.shift();
+      if (nextTask === undefined) {
+        break;
+      }
+      this.#currentTasks++;
+      nextTask();
+    }
   }
 
   /**
@@ -57,7 +82,7 @@ export class Semaphore {
 
   protected acquire(): Promise<void> {
     // if we're under capacity, bump the count and resolve immediately
-    if (this.capacity > this.#currentTasks) {
+    if (this.#capacity > this.#currentTasks) {
       this.#currentTasks += 1;
       return Promise.resolve();
     }
@@ -66,14 +91,22 @@ export class Semaphore {
   }
 
   protected release() {
-    // try waking up the next task
-    const nextTask = this.#waitingTasks.shift();
-    if (nextTask === undefined) {
-      // no task in queue, decrement task count
-      this.#currentTasks -= 1;
+    if (this.#currentTasks < 1) {
+      throw new Error("release called with no running tasks");
+    }
+    // try waking up the next task if we aren't over capacity
+    if (this.#currentTasks <= this.#capacity) {
+      const nextTask = this.#waitingTasks.shift();
+      if (nextTask === undefined) {
+        // no task in queue, decrement task count
+        this.#currentTasks--;
+      } else {
+        // wake up the task
+        nextTask();
+      }
     } else {
-      // wake up the task
-      nextTask();
+      // otherwise just decrement task count
+      this.#currentTasks--;
     }
   }
 }
