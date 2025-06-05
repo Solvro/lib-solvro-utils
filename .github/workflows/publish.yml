@@ -1,0 +1,49 @@
+name: Publish
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Chechout
+        uses: actions/checkout@v4
+
+      - name: Verify package.json version
+        shell: bash
+        run: |
+          VERSION=`jq -r '.version' package.json`;
+          if [[ "refs/tags/v$VERSION" != "$GITHUB_REF" ]]
+          then
+            echo "::error::Pushed tag name does not match the package.json version at the tagged commit!";
+            exit 1;
+          fi
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
