@@ -37,6 +37,10 @@ declare global {
 extendGlobally();
 ```
 
+### promises
+
+- `wait` - returns a promise that resolves after some time (the classic new promise -> set timeout that everyone had to write at least once)
+
 ### semaphore
 
 Contains a simple async `Semaphore` class.

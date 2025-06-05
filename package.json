@@ -31,6 +31,11 @@
       "import": "./dist/map.js",
       "require": "./dist/map.cjs"
     },
+    "./promises": {
+      "types": "./dist/promises.d.ts",
+      "import": "./dist/promises.js",
+      "require": "./dist/promises.cjs"
+    },
     "./semaphore": {
       "types": "./dist/semaphore.d.ts",
       "import": "./dist/semaphore.js",
