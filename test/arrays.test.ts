@@ -1,6 +1,6 @@
-import { expect } from "chai";
-
 import { chunkArray, zip } from "../lib/arrays.ts";
+
+const expect = chai.expect;
 
 describe("arrays.ts", () => {
   describe("chunkArray", () => {

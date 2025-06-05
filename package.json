@@ -47,14 +47,19 @@
   "mocha": {
     "extension": ".test.ts",
     "require": [
-      "ts-node-maintained/register"
+      "ts-node-maintained/register",
+      "./test/support/setup.ts"
     ]
   },
   "devDependencies": {
     "@solvro/config": "^1.13.5",
     "@types/chai": "^5.2.2",
+    "@types/chai-as-promised": "^8.0.2",
+    "@types/chai-spies": "^1.0.6",
     "@types/mocha": "^10.0.10",
     "chai": "^5.2.0",
+    "chai-as-promised": "^8.0.1",
+    "chai-spies": "^1.1.0",
     "eslint": "^9.27.0",
     "mocha": "^11.5.0",
     "prettier": "^3.5.3",
