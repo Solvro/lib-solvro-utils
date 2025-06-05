@@ -1,6 +1,6 @@
 {
   "name": "@solvro/utils",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Small environment-agnostic TS utilities",
   "keywords": [
     "typescript",
@@ -19,7 +19,6 @@
     "url": "git+https://github.com/Solvro/lib-solvro-utils.git"
   },
   "license": "MPL-2.0",
-  "author": "",
   "type": "module",
   "exports": {
     "./arrays": {
@@ -38,6 +37,9 @@
       "require": "./dist/semaphore.cjs"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup lib/*.ts --format cjs,esm --dts",
     "lint": "tsc && eslint && prettier --check .",
