@@ -1,7 +1,5 @@
 import { Semaphore } from "../lib/semaphore.ts";
 
-const expect = chai.expect;
-
 describe("semaphore.ts", () => {
   // a semaphore class with public acquire/release methods for testing
   class OpenSemaphore extends Semaphore {

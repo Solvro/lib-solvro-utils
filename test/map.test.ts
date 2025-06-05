@@ -1,7 +1,5 @@
 import { ExtendedMap, extendGlobally, extendMap } from "../lib/map.ts";
 
-const expect = chai.expect;
-
 describe("map.ts", () => {
   describe("ExtendedMap", () => {
     it("basic map functionality", () => {

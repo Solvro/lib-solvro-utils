@@ -1,7 +1,5 @@
 import { chunkArray, zip } from "../lib/arrays.ts";
 
-const expect = chai.expect;
-
 describe("arrays.ts", () => {
   describe("chunkArray", () => {
     it("12-length array with chunk size 4 => 3x4-element array output", () => {
