@@ -1,7 +1,9 @@
 import {
   assertDefined,
   assertNotNull,
+  assertNotNullish,
   nullableMap,
+  nullishMap,
   optionMap,
 } from "../lib/option.ts";
 
@@ -52,6 +54,29 @@ describe("option.ts", () => {
     });
   });
 
+  describe("nullishMap", () => {
+    it("should call function with value if value is not null", () => {
+      const fn = chai.spy((v: number) => v + 1);
+
+      expect(nullishMap(1, fn)).to.be.equal(2);
+      expect(fn).to.have.been.called.exactly(1);
+    });
+
+    it("should not call function if value is null", () => {
+      const fn = chai.spy((v: number) => v + 1);
+
+      expect(nullishMap(null, fn)).to.equal(null);
+      expect(fn).to.not.have.been.called();
+    });
+
+    it("should not call function if value is undefined", () => {
+      const fn = chai.spy((v: number) => v + 1);
+
+      expect(nullishMap(undefined, fn)).to.equal(undefined);
+      expect(fn).to.not.have.been.called();
+    });
+  });
+
   describe("assertDefined", () => {
     it("should not throw if value is not undefined", () => {
       expect(assertDefined(1)).to.equal(1);
@@ -93,6 +118,36 @@ describe("option.ts", () => {
       expect(() => {
         assertNotNull(null, "special thing");
       }).to.throw("Expected special thing to not be null");
+    });
+  });
+
+  describe("assertNotNullsh", () => {
+    it("should not throw if value is not undefined", () => {
+      expect(assertNotNullish(1)).to.equal(1);
+    });
+
+    it("should throw if value is null", () => {
+      expect(() => {
+        assertNotNullish(null);
+      }).to.throw("Expected value to not be null");
+    });
+
+    it("should throw if value is undefined", () => {
+      expect(() => {
+        assertNotNullish(undefined);
+      }).to.throw("Expected value to be defined");
+    });
+
+    it("should use custom string (null)", () => {
+      expect(() => {
+        assertNotNullish(null, "special thing");
+      }).to.throw("Expected special thing to not be null");
+    });
+
+    it("should use custom string (undefined)", () => {
+      expect(() => {
+        assertNotNullish(undefined, "special thing");
+      }).to.throw("Expected special thing to be defined");
     });
   });
 });
