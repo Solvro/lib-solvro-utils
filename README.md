@@ -9,6 +9,17 @@ A collection of small utility functions that can be used both on the backend and
 - `chunkArray` - a function to split an array into smaller chunks of a given size. inspired by [rust's slice::chunks()](https://doc.rust-lang.org/std/primitive.slice.html#method.chunks)
 - `zip` - a function to iterate over two arrays at once, inspired by [python's zip() function](https://docs.python.org/3/library/functions.html#zip)
 
+### ics
+
+Contains the main `parseICS` function, which parses the provided ICS text to a JSON representation.
+
+- `BEGIN`/`END` are treated as nested object delimeters.
+- Nested objects can either be an object, or an array of objects on the parent object, depending if there are repeats of that object type.
+  - if an object contains only one object of a type, the key corresponding to that type will contain an object
+  - if it contains multiple objects of a type, the key corresponding to that type will contain an array
+- Regular properties with : delimeters are treated as strings.
+- Inline objects with ; delimeters are represented as objects.
+
 ### map
 
 Contains the `ExtendedMap` class, an extension of the vanilla `Map` with the following extra methods:
@@ -36,6 +47,11 @@ declare global {
 
 extendGlobally();
 ```
+
+### option
+
+- `*Map` - Basically Rust's [Option::map](https://doc.rust-lang.org/std/option/enum.Option.html#method.map) ported to JS. Read the JSDoc comments for details.
+- `assert*` - assertion functions that ensure the given value is not null/undefined (depending on function)
 
 ### promises
 
