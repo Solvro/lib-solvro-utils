@@ -79,11 +79,11 @@ describe("option.ts", () => {
 
   describe("assertDefined", () => {
     it("should not throw if value is not undefined", () => {
-      expect(assertDefined(1)).to.equal(1);
+      assertDefined(1);
     });
 
     it("should not throw if value is null", () => {
-      expect(assertDefined(null)).to.equal(null);
+      assertDefined(null);
     });
 
     it("should throw if value is undefined", () => {
@@ -101,11 +101,11 @@ describe("option.ts", () => {
 
   describe("assertNotNull", () => {
     it("should not throw if value is not undefined", () => {
-      expect(assertNotNull(1)).to.equal(1);
+      assertNotNull(1);
     });
 
     it("should not throw if value is undefined", () => {
-      expect(assertNotNull(undefined)).to.equal(undefined);
+      assertNotNull(undefined);
     });
 
     it("should throw if value is null", () => {
@@ -123,7 +123,7 @@ describe("option.ts", () => {
 
   describe("assertNotNullsh", () => {
     it("should not throw if value is not undefined", () => {
-      expect(assertNotNullish(1)).to.equal(1);
+      assertNotNullish(1);
     });
 
     it("should throw if value is null", () => {

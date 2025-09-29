@@ -61,61 +61,58 @@ export function nullishMap<T, R>(
 /**
  * Asserts that the provided optional value is not `undefined`
  *
- * Basically Rust's [Option::unwrap](https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap) ported to JS.
  * If the input value is undefined, throws an error.
- * Otherwise, returns the value unchanged.
  *
  * @param value the input value
  * @param valueName a description of the value, used in the thrown error
- * @returns the input value unchanged
  * @throws TypeError "Expected ${valueName} to be defined" if the value is undefined
  */
-export function assertDefined<T>(value: T | undefined, valueName = "value"): T {
+export function assertDefined<T>(
+  value: T | undefined,
+  valueName = "value",
+): asserts value is T {
   if (value === undefined) {
     throw new TypeError(`Expected ${valueName} to be defined`);
   }
-  return value;
 }
 
 /**
  * Asserts that the provided nullable value is not `null`
  *
- * Basically Rust's [Option::unwrap](https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap) ported to JS.
  * This one's for nullables, because apparently JS chose to have 2 "null" values instead of the correct number - 0.
  * If the input value is null, throws an error.
- * Otherwise, returns the value unchanged.
  *
  * @param value the input value
  * @param valueName a description of the value, used in the thrown error
- * @returns the input value unchanged
  * @throws TypeError "Expected ${valueName} to not be null" if the value is null
  */
-export function assertNotNull<T>(value: T | null, valueName = "value"): T {
+export function assertNotNull<T>(
+  value: T | null,
+  valueName = "value",
+): asserts value is T {
   if (value === null) {
     throw new TypeError(`Expected ${valueName} to not be null`);
   }
-  return value;
 }
 
 /**
  * Asserts that the provided nullable or optional value is not `null` or `undefined`
  *
- * Basically Rust's [Option::unwrap](https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap) ported to JS.
  * This one's for both undefined and null... because JS.
  * If the input value is null or undefined, throws an error
- * Otherwise, returns the value unchanged.
  *
  * @param value the input value
  * @param valueName a description of the value, used in the thrown error
- * @returns the input value unchanged
  * @throws TypeError "Expected ${valueName} to be defined/not be null" if the value is null or undefined
  */
-export function assertNotNullish<T>(value: T | null, valueName = "value"): T {
+export function assertNotNullish<T>(
+  value: T | null,
+  valueName = "value",
+): asserts value is T {
   if (value === null) {
     throw new TypeError(`Expected ${valueName} to not be null`);
   }
   if (value === undefined) {
     throw new TypeError(`Expected ${valueName} to be defined`);
   }
-  return value;
 }
