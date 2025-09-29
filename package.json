@@ -8,7 +8,8 @@
     "utils",
     "semaphore",
     "maps",
-    "arrays"
+    "arrays",
+    "ics"
   ],
   "homepage": "https://github.com/Solvro/lib-solvro-utils#readme",
   "bugs": {
@@ -26,10 +27,20 @@
       "import": "./dist/arrays.js",
       "require": "./dist/arrays.cjs"
     },
+    "./ics": {
+      "types": "./dist/ics.d.ts",
+      "import": "./dist/ics.js",
+      "require": "./dist/ics.cjs"
+    },
     "./map": {
       "types": "./dist/map.d.ts",
       "import": "./dist/map.js",
       "require": "./dist/map.cjs"
+    },
+    "./option": {
+      "types": "./dist/option.d.ts",
+      "import": "./dist/option.js",
+      "require": "./dist/option.cjs"
     },
     "./promises": {
       "types": "./dist/promises.d.ts",
