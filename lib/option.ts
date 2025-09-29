@@ -45,11 +45,11 @@ export function nullableMap<T, R>(
  * Otherwise, returns the value unchanged.
  *
  * @param value the input value
- * @param [valueName="value"] a description of the value, used in the thrown error
+ * @param valueName a description of the value, used in the thrown error
  * @returns the input value unchanged
  * @throws TypeError "Expected ${valueName} to be defined" if the value is undefined
  */
-export function assertDefined<T>(value: T | undefined, valueName: string = "value"): T {
+export function assertDefined<T>(value: T | undefined, valueName = "value"): T {
   if (value === undefined) {
     throw new TypeError(`Expected ${valueName} to be defined`);
   }
@@ -66,12 +66,12 @@ export function assertDefined<T>(value: T | undefined, valueName: string = "valu
  * Otherwise, returns the value unchanged.
  *
  * @param value the input value
- * @param [valueName="value"] a description of the value, used in the thrown error
+ * @param valueName a description of the value, used in the thrown error
  * @returns the input value unchanged
  * @throws TypeError "Expected ${valueName} to not be null" if the value is null
  */
-export function assertNotNull<T>(value: T | undefined, valueName: string = "value"): T {
-  if (value === undefined) {
+export function assertNotNull<T>(value: T | null, valueName = "value"): T {
+  if (value === null) {
     throw new TypeError(`Expected ${valueName} to not be null`);
   }
   return value;
