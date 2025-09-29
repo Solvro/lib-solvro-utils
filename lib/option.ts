@@ -38,6 +38,27 @@ export function nullableMap<T, R>(
 }
 
 /**
+ * Transforms a nullable or optional value using the given function.
+ *
+ * Basically Rust's [Option::map](https://doc.rust-lang.org/std/option/enum.Option.html#method.map) ported to JS.
+ * This one's for both undefined and null... because JS.
+ * If the input value is null, immediately retuns null.
+ * If the input value is undefined, immediately retuns undefined.
+ * Otherwise, returns the result of calling the given function with the input value.
+ * The given function will never be called with a null or undefined value.
+ *
+ * @param input the input value
+ * @param f the transform function
+ * @returns null or undefined if input is null or undefined, otherwise the return value of f
+ */
+export function nullishMap<T, R>(
+  input: T | null | undefined,
+  f: (input: T) => R,
+): R | null | undefined {
+  return input === null ? null : input === undefined ? undefined : f(input);
+}
+
+/**
  * Asserts that the provided optional value is not `undefined`
  *
  * Basically Rust's [Option::unwrap](https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap) ported to JS.
@@ -61,8 +82,7 @@ export function assertDefined<T>(value: T | undefined, valueName = "value"): T {
  *
  * Basically Rust's [Option::unwrap](https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap) ported to JS.
  * This one's for nullables, because apparently JS chose to have 2 "null" values instead of the correct number - 0.
- * If the input value is null, immediately retuns null.
- * If the input value is undefined, throws an error.
+ * If the input value is null, throws an error.
  * Otherwise, returns the value unchanged.
  *
  * @param value the input value
@@ -73,6 +93,29 @@ export function assertDefined<T>(value: T | undefined, valueName = "value"): T {
 export function assertNotNull<T>(value: T | null, valueName = "value"): T {
   if (value === null) {
     throw new TypeError(`Expected ${valueName} to not be null`);
+  }
+  return value;
+}
+
+/**
+ * Asserts that the provided nullable or optional value is not `null` or `undefined`
+ *
+ * Basically Rust's [Option::unwrap](https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap) ported to JS.
+ * This one's for both undefined and null... because JS.
+ * If the input value is null or undefined, throws an error
+ * Otherwise, returns the value unchanged.
+ *
+ * @param value the input value
+ * @param valueName a description of the value, used in the thrown error
+ * @returns the input value unchanged
+ * @throws TypeError "Expected ${valueName} to be defined/not be null" if the value is null or undefined
+ */
+export function assertNotNullish<T>(value: T | null, valueName = "value"): T {
+  if (value === null) {
+    throw new TypeError(`Expected ${valueName} to not be null`);
+  }
+  if (value === undefined) {
+    throw new TypeError(`Expected ${valueName} to be defined`);
   }
   return value;
 }
