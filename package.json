@@ -47,6 +47,11 @@
       "import": "./dist/promises.js",
       "require": "./dist/promises.cjs"
     },
+    "./request_bundler": {
+      "types": "./dist/request_bundler.d.ts",
+      "import": "./dist/request_bundler.js",
+      "require": "./dist/request_bundler.cjs"
+    },
     "./semaphore": {
       "types": "./dist/semaphore.d.ts",
       "import": "./dist/semaphore.js",

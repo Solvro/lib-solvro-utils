@@ -57,6 +57,11 @@ extendGlobally();
 
 - `wait` - returns a promise that resolves after some time (the classic new promise -> set timeout that everyone had to write at least once)
 
+### request_bundler
+
+Contains the `RequestBundler` class, built on top of `ExtendedMap`.
+Provides a simple way to limit concurrent requests of the same type, while redirecting duplicates to existing tasks.
+
 ### semaphore
 
 Contains a simple async `Semaphore` class.
