@@ -48,6 +48,10 @@ declare global {
 extendGlobally();
 ```
 
+### misc
+
+- `isPlainObject` - checks whether a value is a plain object (not null, not undefined, not an array, not a class instance - just an object)
+
 ### option
 
 - `*Map` - Basically Rust's [Option::map](https://doc.rust-lang.org/std/option/enum.Option.html#method.map) ported to JS. Read the JSDoc comments for details.

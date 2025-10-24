@@ -37,6 +37,11 @@
       "import": "./dist/map.js",
       "require": "./dist/map.cjs"
     },
+    "./misc": {
+      "types": "./dist/misc.d.ts",
+      "import": "./dist/misc.js",
+      "require": "./dist/misc.cjs"
+    },
     "./option": {
       "types": "./dist/option.d.ts",
       "import": "./dist/option.js",
