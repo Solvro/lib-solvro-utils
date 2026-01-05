@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 // If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
-import { isPlainObject } from "../lib/misc.ts";
+import { assertExhaustive, isPlainObject } from "../lib/misc.ts";
 
 describe("misc.ts", () => {
   describe("isPlainObject", () => {
@@ -106,5 +106,50 @@ describe("misc.ts", () => {
         expect(isPlainObject(test.value)).to.equal(test.result);
       });
     }
+  });
+
+  describe("assertExhaustive", function () {
+    this.slow(2000);
+    this.timeout(5000);
+
+    it("should throw if executed at runtime", () => {
+      expect(() => assertExhaustive(1 as never)).to.throw(
+        "Unexpected value found at runtime: 1",
+      );
+    });
+
+    it("all possible cases listed - should compile", () => {
+      expect(`
+        import {assertExhaustive} from "../lib/misc.ts";
+        type TestVal = 1 | 2 | 3;
+
+        const val = 2 as TestVal;
+        switch (val) {
+          case 1:
+          case 2:
+          case 3:
+            break;
+          default:
+            assertExhaustive(val);
+        }
+      `).to.compile();
+    });
+
+    it("one possible case missed - should not compile", () => {
+      expect(`
+        import {assertExhaustive} from "../lib/misc.ts";
+        type TestVal = 1 | 2 | 3;
+
+        const val = 2 as TestVal;
+        switch (val) {
+          case 1:
+          case 2:
+          // case 3:
+            break;
+          default:
+            assertExhaustive(val);
+        }
+      `).to.not.compile();
+    });
   });
 });

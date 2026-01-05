@@ -51,6 +51,7 @@ extendGlobally();
 ### misc
 
 - `isPlainObject` - checks whether a value is a plain object (not null, not undefined, not an array, not a class instance - just an object)
+- `assertExhaustive` - utility function for ensuring that all possible cases in a switch statement were covered
 
 ### option
 
