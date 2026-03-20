@@ -68,6 +68,28 @@ export class ExtendedMap<K, V> extends Map<K, V> {
     this.set(key, newValue);
     return newValue;
   }
+
+  /**
+   * Transform the current value at the key using the given callback function
+   *
+   * The callback will be passed the current value of the given key, or undefined if no entry exists.
+   * It is expected to return a new value for the key.
+   * If undefined is returned, the key is deleted.
+   *
+   * Useful for immutable objects. (numbers/strings)
+   * For mutable entries just use the variants of .get and modify the object in-place.
+   *
+   * @param key the key to update
+   * @param callback the transformation to apply
+   */
+  public update(key: K, callback: (current: V | undefined) => V | undefined) {
+    const newValue = callback(this.get(key));
+    if (newValue === undefined) {
+      this.delete(key);
+    } else {
+      this.set(key, newValue);
+    }
+  }
 }
 
 /**
@@ -107,4 +129,6 @@ export function extendGlobally() {
   proto.getOrInsertWith = ExtendedMap.prototype.getOrInsertWith;
   // eslint-disable-next-line @typescript-eslint/unbound-method
   proto.getOrInsertWithAsync = ExtendedMap.prototype.getOrInsertWithAsync;
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  proto.update = ExtendedMap.prototype.update;
 }

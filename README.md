@@ -25,6 +25,7 @@ Contains the main `parseICS` function, which parses the provided ICS text to a J
 Contains the `ExtendedMap` class, an extension of the vanilla `Map` with the following extra methods:
 
 - `getOrInsert`, `getOrInsertWith`, `getOrInsertWithAsync` - getter methods that insert a default value if a key does not exist. probably inspired by [rust's map Entry structs](https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html). useful for building Map-based caches.
+- `update` - apply a transformation to a given map entry (incl. inserting/deleting the entry)
 
 An existing vanilla `Map` instance can be converted to an `ExtendedMap` with the `extendMap()` function. (beware: contains prototype shenanigans)
 ... or you can extend the entire vanilla `Map` prototype with `extendGlobally()`... but please don't do that in library code.

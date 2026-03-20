@@ -1,6 +1,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 // If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import { ExtendedMap, extendGlobally, extendMap } from "../lib/map.ts";
+import { assertDefined } from "../lib/option.ts";
 
 describe("map.ts", () => {
   describe("ExtendedMap", () => {
@@ -118,6 +119,101 @@ describe("map.ts", () => {
       expect(generateDefault).to.have.been.called.exactly(2);
       expect(map.get("a")).to.equal(1);
       expect(map.get("b")).to.equal(2);
+    });
+    describe("update", () => {
+      it("basic transformation", () => {
+        const map = new ExtendedMap<string, number>();
+        const increment = chai.spy((v: number | undefined) => {
+          assertDefined(v, "the value");
+          return v + 1;
+        });
+        map.set("a", 1);
+        map.set("b", 2136);
+
+        // first increment
+        map.update("a", increment);
+        expect(increment).to.have.been.called.exactly(1);
+        expect(increment).to.have.been.called.with.exactly(1);
+        expect(map.get("a")).to.equal(2);
+
+        // increment b
+        map.update("b", increment);
+        expect(increment).to.have.been.called.exactly(2);
+        expect(increment).to.have.been.called.with.exactly(2136);
+        expect(map.get("b")).to.equal(2137);
+
+        // second increment
+        map.update("a", increment);
+        expect(increment).to.have.been.called.exactly(3);
+        expect(increment).to.have.been.called.with.exactly(2);
+        expect(map.get("a")).to.equal(3);
+      });
+
+      it("non-existent keys", () => {
+        const map = new ExtendedMap<string, number>();
+        const increment = chai.spy((v: number | undefined) => (v ?? 0) + 1);
+
+        // new key
+        map.update("a", increment);
+        expect(increment).to.have.been.called.exactly(1);
+        expect(increment).to.have.been.called.with.exactly(undefined);
+        expect(map.get("a")).to.equal(1);
+
+        // another new key
+        map.update("b", increment);
+        expect(increment).to.have.been.called.exactly(2);
+        expect(increment).to.have.been.called.with.exactly(undefined);
+        expect(map.get("b")).to.equal(1);
+
+        // back to a
+        map.update("a", increment);
+        expect(increment).to.have.been.called.exactly(3);
+        expect(increment).to.have.been.called.with.exactly(1);
+        expect(map.get("a")).to.equal(2);
+      });
+
+      it("deleting keys", () => {
+        const map = new ExtendedMap<string, number>();
+        const increment = chai.spy((v: number | undefined) => {
+          const newVal = (v ?? 0) + 1;
+          if (newVal > 2137) {
+            return undefined;
+          }
+          return newVal;
+        });
+
+        // new key
+        map.update("a", increment);
+        expect(increment).to.have.been.called.exactly(1);
+        expect(increment).to.have.been.called.with.exactly(undefined);
+        expect(map.get("a")).to.equal(1);
+
+        // another new key
+        map.update("b", increment);
+        expect(increment).to.have.been.called.exactly(2);
+        expect(increment).to.have.been.called.with.exactly(undefined);
+        expect(map.get("b")).to.equal(1);
+
+        // back to a
+        map.update("a", increment);
+        expect(increment).to.have.been.called.exactly(3);
+        expect(increment).to.have.been.called.with.exactly(1);
+        expect(map.get("a")).to.equal(2);
+
+        // now set b to 2136 and increment
+        map.set("b", 2136);
+        map.update("b", increment);
+        expect(increment).to.have.been.called.exactly(4);
+        expect(increment).to.have.been.called.with.exactly(2136);
+        expect(map.get("b")).to.equal(2137);
+
+        // increment again, should go over limit and delete
+        map.update("b", increment);
+        expect(increment).to.have.been.called.exactly(5);
+        expect(increment).to.have.been.called.with.exactly(2137);
+        expect(map.get("b")).to.equal(undefined);
+        expect(map.has("b")).to.equal(false);
+      });
     });
   });
 
