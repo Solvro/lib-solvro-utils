@@ -1,6 +1,8 @@
 name: Push
 
-on: push
+on:
+  push:
+  merge_group:
 
 jobs:
   lint:
@@ -74,7 +76,7 @@ jobs:
     name: Create version tag on new version
     runs-on: ubuntu-latest
     needs: [build]
-    if: ${{ success() && github.ref == 'refs/heads/main' }}
+    if: ${{ success() && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     outputs:
       newVersion: ${{ steps.main.outputs.newVersion }}
     steps:
@@ -107,6 +109,7 @@ jobs:
     needs: [build, create-tag-if-needed]
     if: |
       always() &&
+      github.event_name == 'push' &&
       !contains(needs.*.result, 'failure') &&
       !contains(needs.*.result, 'cancelled') &&
       ( startsWith(github.ref, 'refs/tags/v') || needs.create-tag-if-needed.outputs.newVersion == 'true' )
