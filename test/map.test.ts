@@ -280,28 +280,66 @@ describe("map.ts", () => {
       Object.defineProperties(globalThis.Map.prototype, mapPrototypeBackup);
     });
 
+    /* eslint-disable @typescript-eslint/unbound-method */
     it("extends the Map prototype", () => {
       const map = new Map();
       map.set("a", 1);
       expect(map).to.not.be.an.instanceof(ExtendedMap);
-      expect(map).to.not.have.a.property("getOrInsert");
-      expect(map).to.not.have.a.property("getOrInsertWith");
-      expect(map).to.not.have.a.property("getOrInsertWithAsync");
-      expect(Map.prototype).to.not.have.a.property("getOrInsert");
-      expect(Map.prototype).to.not.have.a.property("getOrInsertWith");
-      expect(Map.prototype).to.not.have.a.property("getOrInsertWithAsync");
+      expect(map).to.not.have.a.property(
+        "getOrInsert",
+        ExtendedMap.prototype.getOrInsert,
+      );
+      expect(map).to.not.have.a.property(
+        "getOrInsertWith",
+        ExtendedMap.prototype.getOrInsertWith,
+      );
+      expect(map).to.not.have.a.property(
+        "getOrInsertWithAsync",
+        ExtendedMap.prototype.getOrInsertWithAsync,
+      );
+      expect(Map.prototype).to.not.have.a.property(
+        "getOrInsert",
+        ExtendedMap.prototype.getOrInsert,
+      );
+      expect(Map.prototype).to.not.have.a.property(
+        "getOrInsertWith",
+        ExtendedMap.prototype.getOrInsertWith,
+      );
+      expect(Map.prototype).to.not.have.a.property(
+        "getOrInsertWithAsync",
+        ExtendedMap.prototype.getOrInsertWithAsync,
+      );
       expect(map.get("a")).to.equal(1);
 
       extendGlobally();
 
       expect(map).to.not.be.an.instanceof(ExtendedMap);
-      expect(map).to.have.a.property("getOrInsert");
-      expect(map).to.have.a.property("getOrInsertWith");
-      expect(map).to.have.a.property("getOrInsertWithAsync");
-      expect(Map.prototype).to.have.own.property("getOrInsert");
-      expect(Map.prototype).to.have.own.property("getOrInsertWith");
-      expect(Map.prototype).to.have.own.property("getOrInsertWithAsync");
+      expect(map).to.have.a.property(
+        "getOrInsert",
+        ExtendedMap.prototype.getOrInsert,
+      );
+      expect(map).to.have.a.property(
+        "getOrInsertWith",
+        ExtendedMap.prototype.getOrInsertWith,
+      );
+      expect(map).to.have.a.property(
+        "getOrInsertWithAsync",
+        ExtendedMap.prototype.getOrInsertWithAsync,
+      );
+      expect(Map.prototype).to.have.a.property(
+        "getOrInsert",
+        ExtendedMap.prototype.getOrInsert,
+      );
+      expect(Map.prototype).to.have.a.property(
+        "getOrInsertWith",
+        ExtendedMap.prototype.getOrInsertWith,
+      );
+      expect(Map.prototype).to.have.a.property(
+        "getOrInsertWithAsync",
+        ExtendedMap.prototype.getOrInsertWithAsync,
+      );
       expect(map.get("a")).to.equal(1);
     });
+    /* eslint-enable @typescript-eslint/unbound-method */
   });
 });
