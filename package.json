@@ -1,6 +1,6 @@
 {
   "name": "@solvro/utils",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Small environment-agnostic TS utilities",
   "keywords": [
     "typescript",
