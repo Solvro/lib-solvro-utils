@@ -59,6 +59,10 @@ extendGlobally();
 - `*Map` - Basically Rust's [Option::map](https://doc.rust-lang.org/std/option/enum.Option.html#method.map) ported to JS. Read the JSDoc comments for details.
 - `assert*` - assertion functions that ensure the given value is not null/undefined (depending on function)
 
+### polish
+
+- `QuantitativeNoun` - when configured with 3 possible declensions of a polish noun, this class helps correctly decline the noun according to its count
+
 ### promises
 
 - `wait` - returns a promise that resolves after some time (the classic new promise -> set timeout that everyone had to write at least once)
