@@ -29,7 +29,7 @@ globalThis.chai = use(chaiAsPromised);
 globalThis.chai = chai.use((chai, utils) => {
   chai.Assertion.addMethod("compile", function () {
     utils.expectTypes(this, ["string"]);
-    const negate = utils.flag(this, "negate") as unknown;
+    const negate = utils.flag(this, "negate") === true;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
     const ssfi = utils.flag(this, "ssfi") as Function;
 
@@ -46,17 +46,17 @@ globalThis.chai = chai.use((chai, utils) => {
       "ts_snippet.ts",
     );
 
-    if (negate === true) {
-      try {
-        tsCompiler.compile(this._obj as string, snippetFileName);
-        throw new AssertionError(
-          "Expected TS code snippet to fail compilation",
-          undefined,
-          ssfi,
-        );
-      } catch {}
-    } else {
+    try {
       tsCompiler.compile(this._obj as string, snippetFileName);
+      throw new AssertionError(
+        "Expected TS code snippet to fail compilation",
+        undefined,
+        ssfi,
+      );
+    } catch (e) {
+      if (e instanceof AssertionError === negate) {
+        throw e;
+      }
     }
   });
 });
