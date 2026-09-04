@@ -7,6 +7,10 @@
  * Contains strings for the 3 possible forms of the noun,
  * and a method to pick the right form based on the count.
  *
+ * @param singular - The singular form of the noun (used for 1).
+ * @param paucal - The paucal form of the noun (used for 2, 3, 4).
+ * @param plural - The plural form of the noun (used for 0, 5 and above).
+ *
  * @example
  * const apple = new QuantitativeNoun('jabłko', 'jabłka', 'jabłek');
  * apple.decline(1) // '1 jabłko'
