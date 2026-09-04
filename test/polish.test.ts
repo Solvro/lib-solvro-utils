@@ -1,78 +1,104 @@
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 // If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
-import { declineNumeric } from "../lib/polish.ts";
+import { QuantitativeNoun } from "../lib/polish.ts";
 
 describe("polish.ts", () => {
-  describe("declineNumeric", () => {
-    it("should handle normal cases", () => {
-      expect(declineNumeric(0, "kategoria", "kategorie", "kategorii")).to.equal(
-        "0 kategorii",
-      );
-      expect(declineNumeric(1, "kategoria", "kategorie", "kategorii")).to.equal(
-        "1 kategoria",
-      );
-      expect(declineNumeric(2, "kategoria", "kategorie", "kategorii")).to.equal(
-        "2 kategorie",
-      );
-      expect(declineNumeric(5, "kategoria", "kategorie", "kategorii")).to.equal(
-        "5 kategorii",
-      );
+  describe("QuantitativeNoun", () => {
+    describe(".decline", () => {
+      it("should handle normal cases", () => {
+        const category = new QuantitativeNoun(
+          "kategoria",
+          "kategorie",
+          "kategorii",
+        );
+        expect(category.decline(0)).to.equal("0 kategorii");
+        expect(category.decline(1)).to.equal("1 kategoria");
+        expect(category.decline(2)).to.equal("2 kategorie");
+        expect(category.decline(5)).to.equal("5 kategorii");
 
-      expect(declineNumeric(0, "opcja", "opcje", "opcji")).to.equal("0 opcji");
-      expect(declineNumeric(1, "opcja", "opcje", "opcji")).to.equal("1 opcja");
-      expect(declineNumeric(2, "opcja", "opcje", "opcji")).to.equal("2 opcje");
-      expect(declineNumeric(3, "opcja", "opcje", "opcji")).to.equal("3 opcje");
-      expect(declineNumeric(4, "opcja", "opcje", "opcji")).to.equal("4 opcje");
-      expect(declineNumeric(5, "opcja", "opcje", "opcji")).to.equal("5 opcji");
-      expect(declineNumeric(11, "opcja", "opcje", "opcji")).to.equal(
-        "11 opcji",
-      );
-      expect(declineNumeric(15, "opcja", "opcje", "opcji")).to.equal(
-        "15 opcji",
-      );
-      expect(declineNumeric(21, "opcja", "opcje", "opcji")).to.equal(
-        "21 opcji",
-      );
-      expect(declineNumeric(22, "opcja", "opcje", "opcji")).to.equal(
-        "22 opcje",
-      );
+        const option = new QuantitativeNoun("opcja", "opcje", "opcji");
+        expect(option.decline(0)).to.equal("0 opcji");
+        expect(option.decline(1)).to.equal("1 opcja");
+        expect(option.decline(2)).to.equal("2 opcje");
+        expect(option.decline(3)).to.equal("3 opcje");
+        expect(option.decline(4)).to.equal("4 opcje");
+        expect(option.decline(5)).to.equal("5 opcji");
+        expect(option.decline(11)).to.equal("11 opcji");
+        expect(option.decline(15)).to.equal("15 opcji");
+        expect(option.decline(21)).to.equal("21 opcji");
+        expect(option.decline(22)).to.equal("22 opcje");
+      });
+
+      it("should handle exception cases", () => {
+        const category = new QuantitativeNoun(
+          "kategoria",
+          "kategorie",
+          "kategorii",
+        );
+        expect(category.decline(12)).to.equal("12 kategorii");
+        expect(category.decline(22)).to.equal("22 kategorie");
+        expect(category.decline(113)).to.equal("113 kategorii");
+        expect(category.decline(123)).to.equal("123 kategorie");
+
+        const option = new QuantitativeNoun("opcja", "opcje", "opcji");
+        expect(option.decline(12)).to.equal("12 opcji");
+        expect(option.decline(13)).to.equal("13 opcji");
+        expect(option.decline(14)).to.equal("14 opcji");
+      });
     });
 
-    it("should handle exception cases", () => {
-      expect(
-        declineNumeric(12, "kategoria", "kategorie", "kategorii"),
-      ).to.equal("12 kategorii");
-      expect(
-        declineNumeric(22, "kategoria", "kategorie", "kategorii"),
-      ).to.equal("22 kategorie");
-      expect(
-        declineNumeric(113, "kategoria", "kategorie", "kategorii"),
-      ).to.equal("113 kategorii");
-      expect(
-        declineNumeric(123, "kategoria", "kategorie", "kategorii"),
-      ).to.equal("123 kategorie");
+    describe(".singular/.paucal/.plural", () => {
+      it("configured strings should be accessible", () => {
+        const category = new QuantitativeNoun(
+          "kategoria",
+          "kategorie",
+          "kategorii",
+        );
+        expect(category.singular).to.equal("kategoria");
+        expect(category.paucal).to.equal("kategorie");
+        expect(category.plural).to.equal("kategorii");
 
-      expect(declineNumeric(12, "opcja", "opcje", "opcji")).to.equal(
-        "12 opcji",
-      );
-      expect(declineNumeric(13, "opcja", "opcje", "opcji")).to.equal(
-        "13 opcji",
-      );
-      expect(declineNumeric(14, "opcja", "opcje", "opcji")).to.equal(
-        "14 opcji",
-      );
+        const option = new QuantitativeNoun("opcja", "opcje", "opcji");
+        expect(option.singular).to.equal("opcja");
+        expect(option.paucal).to.equal("opcje");
+        expect(option.plural).to.equal("opcji");
+      });
+
+      it("modifying strings after creation should cause TS errors", function () {
+        this.slow(2000);
+        this.timeout(5000);
+
+        expect(`
+          import {QuantitativeNoun} from "../lib/polish.ts";
+
+          const option = new QuantitativeNoun("opcja", "opcje", "opcji");
+          option.singular = "kategoria";
+        `).to.not.compile();
+
+        expect(`
+          import {QuantitativeNoun} from "../lib/polish.ts";
+
+          const option = new QuantitativeNoun("opcja", "opcje", "opcji");
+          option.paucal = "kategorie";
+        `).to.not.compile();
+
+        expect(`
+          import {QuantitativeNoun} from "../lib/polish.ts";
+
+          const option = new QuantitativeNoun("opcja", "opcje", "opcji");
+          option.plural = "kategorii";
+        `).to.not.compile();
+      });
     });
 
     it("should work with the JSDoc apple example", () => {
-      expect(declineNumeric(1, "jabłko", "jabłka", "jabłek")).to.equal(
-        "1 jabłko",
-      );
-      expect(declineNumeric(2, "jabłko", "jabłka", "jabłek")).to.equal(
-        "2 jabłka",
-      );
-      expect(declineNumeric(5, "jabłko", "jabłka", "jabłek")).to.equal(
-        "5 jabłek",
-      );
+      const apple = new QuantitativeNoun("jabłko", "jabłka", "jabłek");
+      expect(apple.decline(1)).to.equal("1 jabłko");
+      expect(apple.decline(2)).to.equal("2 jabłka");
+      expect(apple.decline(5)).to.equal("5 jabłek");
+      expect(apple.singular).to.equal("jabłko");
+      expect(apple.paucal).to.equal("jabłka");
+      expect(apple.plural).to.equal("jabłek");
     });
   });
 });
